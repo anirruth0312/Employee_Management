@@ -77,7 +77,6 @@ void Employee::addEmployee()
     }
     cout << "\n";
 }
-
 void Employee::updateEmployee()
 {
     system("cls");
@@ -85,10 +84,10 @@ void Employee::updateEmployee()
     char newid[5];
     char newdesignation[100];
 update:
-    cout << "Enter the Employee id :";
+    cout << "Enter the Employee id: ";
     cin >> newid;
     bool ispresent = false;
-    while (fscanf(file, "%s %s %s %d %d", &name[0], &id[0], &designation[0], &age, &experience) != EOF)
+    while (fscanf(file, "%s %s %s %d %d", name, id, designation, &age, &experience) != EOF)
     {
         if (strcmp(newid, id) == 0)
         {
@@ -97,20 +96,23 @@ update:
     }
     if (!ispresent)
     {
-        cout << "\nEmployee ID doesn't exist. Enter a valid ID : ";
+        cout << "\nEmployee ID doesn't exist. Enter a valid ID: ";
         goto update;
     }
-    cout << "Enter new Employee designation\n";
+    cout << "Enter new Employee designation: ";
     cin >> newdesignation;
     FILE *tempfile = fopen("tempfile.txt", "w");
-    while (fscanf(file, "%s %s %s %d %d", &name[0], &id[0], &designation[0], &age, &experience) != EOF)
+    rewind(file); // Rewind the file pointer back to the beginning
+    while (fscanf(file, "%s %s %s %d %d", name, id, designation, &age, &experience) != EOF)
     {
         if (strcmp(newid, id) == 0)
         {
-            fprintf(tempfile, "%s %s %s %d %d \n", name, id, newdesignation, age, experience);
+            fprintf(tempfile, "%s %s %s %d %d\n", name, id, newdesignation, age, experience);
         }
         else
-            fprintf(tempfile, "%s %s %s %d %d \n", name, id, designation, age, experience);
+        {
+            fprintf(tempfile, "%s %s %s %d %d\n", name, id, designation, age, experience);
+        }
     }
     fclose(file);
     fclose(tempfile);
